@@ -99,7 +99,7 @@ dbotones = [
 ]
 
 def retornaCaracter(tecla):
-    print('han pulsado', tecla)
+    print ("Has pulsado", tecla)
 
 class Display(ttk.Frame):
 
@@ -124,7 +124,6 @@ class CalcButton(ttk.Frame):
 
         ttk.Button(self, text=text, command=lambda: command(text) ).pack(side=TOP, fill=BOTH, expand=True)
 
-
 class Keyboard(ttk.Frame):
     def __init__(self, parent, command):
         ttk.Frame.__init__(self, parent, width=WIDTH*4, height=HEIGHT*5)
@@ -138,7 +137,6 @@ class Keyboard(ttk.Frame):
 
             btn = CalcButton(self, boton['text'],width=w, height=h, command=command)
             btn.grid(row=boton['r'], column=boton['c'], columnspan=w, rowspan=h)
-
 
 class Calculator(ttk.Frame):
     def __init__(self, parent):
@@ -154,6 +152,9 @@ class Calculator(ttk.Frame):
         self.teclado.pack(side=TOP)
 
     def gestiona_calculos(self, tecla):
+        
+        
+        
         '''
         Establecer toda la lógica de calculos posible en función de lo tecleado
         variables
