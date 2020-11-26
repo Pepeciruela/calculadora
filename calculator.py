@@ -147,10 +147,10 @@ class Calculator(ttk.Frame):
         s = ttk.Style()
         s.theme_use('alt')
 
-        self.display = calculator.Display(self)
+        self.display = Display(self)
         self.display.pack(side=TOP, fill=BOTH, expand=True)
 
-        self.teclado = calculator.Keyboard(self, self.gestiona_calculos)
+        self.teclado = Keyboard(self, self.gestiona_calculos)
         self.teclado.pack(side=TOP)
 
     def gestiona_calculos(self, tecla):
