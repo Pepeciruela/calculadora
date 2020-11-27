@@ -87,7 +87,7 @@ dbotones = [
         'w': 2
     },
     {
-        'text': ',',
+        'text': '.',
         'r': 4,
         'c': 2,
     },
@@ -145,8 +145,8 @@ class Calculator(ttk.Frame):
     valor1 = None
     valor2 = None
     r = None
-    operador = ''
-    cadena = ''
+    operador = ""
+    cadena = ""
 
     def __init__(self, parent):
         ttk.Frame.__init__(self, parent, width=WIDTH*4, height=HEIGHT*6)
@@ -163,36 +163,50 @@ class Calculator(ttk.Frame):
     def gestiona_calculos(self, tecla):
         print(tecla)
 
-        if tecla.isdigit() != 0:
-            if not (self.cadena == "" and tecla == "0"):
-                self.cadena += tecla
-                self.display.refresh(self.cadena)
-        elif tecla in '+-x÷':
-            if self.valor1 == None:
-                self.valor1 = int(self.cadena)
-                self.cadena = ''
-                self.operador = tecla
+        if tecla.isdigit() != 0: # si la tecla es diferente a 0
+            if len(self.cadena) > 9:#si la longitud del número es mayor que 9, no dejes seguir añadiendo números
+                return
+            if not (self.cadena == "" and tecla == "0"): # si cadena no está vacía y tecla no he pulsado 0
+                self.cadena += tecla # cadena coge el valor de la tecla pulsada
+                self.display.refresh(self.cadena) # refrescamos el display con el nuevo valor de la cadena
+        elif tecla in ("+-x÷"): # si la tecla es un simbolo de operación
+            if self.valor1 == None and not self.cadena: #si el valor1 esta vacio y la cadena está vacia
+                return #volver (evita el casque de meter simbolos de inicio sin información)
+            if self.valor1 == None: # si el valor1 está vacio
+                self.valor1 = float(self.cadena) # el valor1 pasa a ser el valor de la cadena
+                self.cadena = "" #se vacia la cadena
+                self.operador = tecla # el operador coge el simbolo de la tecla pulsada
+            elif self.valor1 != None and not self.cadena:
+                self.operador = tecla # el operador coge el simbolo de la tecla pulsada
             else:
-                if not self.cadena:
+                if not self.cadena: #si no hay cadena vuelve
                     return
-                self.valor2 = int(self.cadena)
-                self.r = self.calculate()
-                self.display.refresh(self.r)
-                self.valor1 = self.r
-            self.cadena = ""    
-        elif tecla == '=':
-            self.valor2 = int(self.cadena)
-            self.r = self.calculate()
-            self.display.refresh(self.r)
-            self.valor1 = self.r
-            self.cadena = ""  
-        elif tecla == "C":
-            self.valor1 = None
-            self.valor2 = None
-            self.r = None
-            self.operador = ""
-            self.cadena = ""
-            self.display.refresh("0")
+                self.valor2 = float(self.cadena) #si hay cadena el valor2 pasa a ser el valor de la cadena
+                self.r = self.calculate() #el resultado ejecuta la función calculate en función de su simbolo
+                self.display.refresh(self.r) #refrescamos el display con el resultado de la operación
+                self.valor1 = self.r #el valor1 pasa a ser el valor del resultado
+                self.operador = tecla # el operador coge el simbolo de la tecla pulsada
+                self.cadena = "" #se vacia la cadena
+        elif tecla == '=': #si la tecla pulsada es =
+            self.valor2 = float(self.cadena) #si hay cadena el valor2 pasa a ser el valor de la cadena
+            self.r = self.calculate() #el resultado ejecuta la función calculate en función de su simbolo
+            self.display.refresh(self.r) #refrescamos el display con el resultado de la operación
+            self.valor1 = self.r #el valor1 pasa a ser el valor del resultado
+            self.cadena = "" #se vacia la cadena
+            self.operador = "" #se reinicia el operador
+        elif tecla == "C": #si la tecla pulsada es borrar
+            self.valor1 = None #reiniciamos valor1
+            self.valor2 = None #reiniciamos valor2
+            self.r = None #reiniciamos resultado
+            self.operador = "" #reiniciamos operador
+            self.cadena = "" #reiniciamos cadena
+            self.display.refresh("0") #refrescamos el display a 0
+        elif tecla == "." and "." not in self.cadena: #si la tecla es , y no está dentro de la cadena ya
+            self.cadena += tecla # añadir , a la cadena
+            self.display.refresh(self.cadena) # refrescamos el display con el nuevo valor de la cadena
+        elif tecla == "+/-":
+            
+            
 
     def calculate(self):
         
