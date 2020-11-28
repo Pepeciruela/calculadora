@@ -169,7 +169,7 @@ class Calculator(ttk.Frame):
             if not (self.cadena == "" and tecla == "0"): # si cadena no está vacía y tecla no he pulsado 0
                 self.cadena += tecla # cadena coge el valor de la tecla pulsada
                 self.display.refresh(self.cadena) # refrescamos el display con el nuevo valor de la cadena
-        elif tecla in ("+-x÷"): # si la tecla es un simbolo de operación
+        elif tecla in ("+", "-", "x", "÷"): # si la tecla es un simbolo de operación
             if self.valor1 == None and not self.cadena: #si el valor1 esta vacio y la cadena está vacia
                 return #volver (evita el casque de meter simbolos de inicio sin información)
             if self.valor1 == None: # si el valor1 está vacio
@@ -205,9 +205,13 @@ class Calculator(ttk.Frame):
             self.cadena += tecla # añadir , a la cadena
             self.display.refresh(self.cadena) # refrescamos el display con el nuevo valor de la cadena
         elif tecla == "+/-":
-            
-            
-
+            if self.valor1 == None and not self.cadena: #si el valor1 esta vacio y la cadena está vacia
+                return #volver (evita el casque de meter simbolos de inicio sin información)
+            else:
+                self.valor1 = float(self.cadena) * -1  # convertimos el valor de la cadena en negativo/positivo y lo pasamos a valor1
+                self.cadena = str(self.valor1) #asignamos el nuevo valor negativo/positivo a la cadena
+                self.display.refresh(self.cadena) # refrescamos el display con el nuevo valor de la cadena
+                
     def calculate(self):
         
         if self.operador == '+':
