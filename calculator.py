@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-import ast
+from ast import literal_eval
 
 WIDTH = 68
 HEIGHT = 50
@@ -160,7 +160,7 @@ class Calculator(ttk.Frame):
     def gestiona_calculos(self, tecla):
         print(tecla)
 
-        if tecla.isdigit() != 0: # si la tecla es diferente a 0
+        if tecla.isdigit(): # si la tecla es diferente a 0
             if len(self.cadena) > 9:#si la longitud del número es mayor que 9, no dejes seguir añadiendo números
                 return
             if not (self.cadena == "" and tecla == "0"): # si cadena no está vacía y tecla no he pulsado 0
@@ -170,7 +170,7 @@ class Calculator(ttk.Frame):
             if self.valor1 == None and not self.cadena: #si el valor1 esta vacio y la cadena está vacia
                 return #volver (evita el casque de meter simbolos de inicio sin información)
             if self.valor1 == None: # si el valor1 está vacio
-                self.valor1 = ast.literal_eval(self.cadena) # el valor1 pasa a ser el valor de la cadena
+                self.valor1 = literal_eval(self.cadena) # el valor1 pasa a ser el valor de la cadena
                 self.cadena = "" #se vacia la cadena
                 self.operador = tecla # el operador coge el simbolo de la tecla pulsada
             elif self.valor1 != None and not self.cadena:
@@ -178,7 +178,7 @@ class Calculator(ttk.Frame):
             else:
                 if not self.cadena: #si no hay cadena vuelve
                     return
-                self.valor2 = ast.literal_eval(self.cadena) #si hay cadena el valor2 pasa a ser el valor de la cadena
+                self.valor2 = literal_eval(self.cadena) #si hay cadena el valor2 pasa a ser el valor de la cadena
                 self.r = self.calculate() #el resultado ejecuta la función calculate en función de su simbolo
                 self.display.refresh(self.r) #refrescamos el display con el resultado de la operación
                 self.valor1 = self.r #el valor1 pasa a ser el valor del resultado
@@ -187,7 +187,7 @@ class Calculator(ttk.Frame):
         elif tecla == '=': #si la tecla pulsada es =
             if self.valor1 == None and not self.cadena: #si el valor1 esta vacio y la cadena está vacia
                 return #volver (evita el casque de meter simbolos de inicio sin información)
-            self.valor2 = ast.literal_eval(self.cadena) #si hay cadena el valor2 pasa a ser el valor de la cadena
+            self.valor2 = literal_eval(self.cadena) #si hay cadena el valor2 pasa a ser el valor de la cadena
             self.r = self.calculate() #el resultado ejecuta la función calculate en función de su simbolo
             self.display.refresh(self.r) #refrescamos el display con el resultado de la operación
             self.valor1 = self.r #el valor1 pasa a ser el valor del resultado
@@ -201,7 +201,13 @@ class Calculator(ttk.Frame):
             self.cadena = "" #reiniciamos cadena
             self.display.refresh("0") #refrescamos el display a 0
         elif tecla == "." and "." not in self.cadena: #si la tecla es , y no está dentro de la cadena ya
-            self.cadena += tecla # añadir , a la cadena
+            if self.cadena == "":
+                self.cadena = self.cadena + "0" + tecla
+            else:
+                self.cadena += tecla # añadir , a la cadena
+                
+            #self.cadena += tecla if cadena != "" else ("0" + tecla) --> terciaria 
+            
             self.display.refresh(self.cadena) # refrescamos el display con el nuevo valor de la cadena
         elif tecla == "+/-":
             if self.valor1 == None and not self.cadena: #si el valor1 esta vacio y la cadena está vacia
@@ -212,7 +218,7 @@ class Calculator(ttk.Frame):
                 self.display.refresh(self.cadena) # refrescamos el display con el nuevo valor de la cadena
                 self.valor1 =  None # reiniciamos valor 1 a 0
             else:
-                self.valor1 = ast.literal_eval(self.cadena) * -1  # convertimos el valor de la cadena en negativo/positivo y lo pasamos a valor1. ast.litera determina si es int o float
+                self.valor1 = literal_eval(self.cadena) * -1  # convertimos el valor de la cadena en negativo/positivo y lo pasamos a valor1. ast.litera determina si es int o float
                 self.cadena = str(self.valor1) #asignamos el nuevo valor negativo/positivo a la cadena
                 self.display.refresh(self.cadena) # refrescamos el display con el nuevo valor de la cadena
                 self.valor1 =  None # reiniciamos valor 1 a 0
